@@ -16,6 +16,7 @@ describe('Verify auth0 application functions.', function () {
   const clientId = "myId";
   const domain = "cimpressfake.auth0.com";
   const realm = "https://fakeapi.cimpress.io/";
+  const jwksUrl = "https://fakejwksserver.cimpress.io";
   beforeEach(function () {
     config = {
       app: {
@@ -26,7 +27,8 @@ describe('Verify auth0 application functions.', function () {
             secret: 'this is a secret',
           },
           domain: domain,
-          realm: realm,
+          realm,
+          jwksUrl
         }
       }
     };
