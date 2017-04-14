@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "commitmsg": "validate-commit-msg",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "npm run commitmsg && semantic-release pre && npm publish && semantic-release post"
   },
   "keywords": [
     "auth0",
