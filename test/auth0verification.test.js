@@ -1,4 +1,5 @@
 /*jshint -W030 */
+'use strict';
 const expect = require("chai").expect,
   chai = require("chai"),
   assert = require("assert-plus"),
@@ -11,7 +12,7 @@ chai.use(spies);
 
 describe('Verify auth0 application functions.', function () {
 
-  let helper, jwtMock, config, mw;
+  var helper, jwtMock, config, mw;
   const clientId = "myId";
   const domain = "cimpressfake.auth0.com";
   const realm = "https://fakeapi.cimpress.io/";
