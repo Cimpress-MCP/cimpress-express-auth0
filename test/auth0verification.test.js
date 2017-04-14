@@ -1,5 +1,5 @@
 /*jshint -W030 */
-var expect = require("chai").expect,
+const expect = require("chai").expect,
   chai = require("chai"),
   assert = require("assert-plus"),
   spies = require("chai-spies"),
@@ -11,9 +11,10 @@ chai.use(spies);
 
 describe('Verify auth0 application functions.', function () {
 
-  var helper, jwtMock, config, mw;
-  var clientId = "myId";
-  var domain = "cimpressfake.auth0.com";
+  let helper, jwtMock, config, mw;
+  const clientId = "myId";
+  const domain = "cimpressfake.auth0.com";
+  const realm = "https://fakeapi.cimpress.io/";
   beforeEach(function () {
     config = {
       app: {
@@ -21,9 +22,10 @@ describe('Verify auth0 application functions.', function () {
           application: {
             clientId: clientId,
             connections: ['conn1', 'conn2'],
-            secret: 'this is a secret'
+            secret: 'this is a secret',
           },
-          domain: domain
+          domain: domain,
+          realm: realm,
         }
       }
     };
@@ -57,7 +59,7 @@ describe('Verify auth0 application functions.', function () {
     });
   });
 
-  it('Should validate a request with a base64 encoded secret', function() {
+  it('Should validate a request with a base64 encoded secret', function () {
     jwtMock.setJwtFunction(function (req, res, next) {
       req.user = {};
       next();
@@ -123,7 +125,7 @@ describe('Verify auth0 application functions.', function () {
         ' service=' + helper.finishedRequest.protocol +
         '://' + helper.finishedRequest.hostname + helper.finishedRequest.baseUrl + '"');
       expect(helper.finishedResponse._headers['www-authenticate']).to.include(
-        'Bearer realm="https://api.cimpress.io/", authorization_uri="https://' + domain + '/oauth/token"');
+        'Bearer realm="' + realm + '", authorization_uri="https://' + domain + '/oauth/token"');
     });
   });
 
