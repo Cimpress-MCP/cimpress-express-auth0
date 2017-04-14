@@ -1,10 +1,12 @@
 {
   "name": "cimpress-express-auth0",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Express middleware designed for managing a web application's interactions with the Auth0 SDK.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**.js"
+    "test": "mocha",
+    "commitmsg": "validate-commit-msg",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "keywords": [
     "auth0",
@@ -12,6 +14,10 @@
     "express",
     "middleware"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cimpress-MCP/aws-secrets.git"
+  },
   "author": "Dave Purrington",
   "license": "SEE LICENSE in LICENSE.txt",
   "dependencies": {
@@ -20,6 +26,7 @@
     "express-jwt": "^5.1.0",
     "express-unless": "^0.3.0",
     "jsonwebtoken": "^7.3.0",
+    "jwks-rsa": "^1.1.1",
     "lodash": "^4.17.4",
     "node-uuid": "^1.4.8",
     "util": "^0.10.3"
@@ -27,11 +34,22 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
+    "cz-conventional-changelog": "^2.0.0",
     "depd": "^1.1.0",
+    "express": "^4.15.2",
+    "husky": "^0.13.3",
     "mocha": "^3.2.0",
     "mockery": "^2.0.0",
     "moment": "^2.18.1",
+    "semantic-release": "^6.3.2",
+    "semantic-release-cli": "^3.0.3",
     "supertest": "^3.0.0",
-    "supertest-as-promised": "^4.0.2"
+    "supertest-as-promised": "^4.0.2",
+    "validate-commit-msg": "^2.12.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
