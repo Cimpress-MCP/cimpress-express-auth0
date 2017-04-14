@@ -1,11 +1,12 @@
 {
   "name": "cimpress-express-auth0",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Express middleware designed for managing a web application's interactions with the Auth0 SDK.",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "commitmsg": "validate-commit-msg"
+    "commitmsg": "validate-commit-msg",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "keywords": [
     "auth0",
