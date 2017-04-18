@@ -14,13 +14,13 @@ Express.js middleware designed for managing a web application's interactions wit
 The config object passed in must have the following sections and fields:
 
 Section: app.auth0
-Fields: 
+Fields:
 * domain: The token issuer w/o https:// or the trailing /
 * realm: The realm of the token, used in the challenge headers, full url (w/ https:// and trailing /)
 * jwksUrl: The url to retrieve the jwk from, only needed for OAuth v2
 
 Section: app.auth0.application
-Fields: 
+Fields:
 * secret: The client secret, not needed for OAuth v2
 * clientId: Your own client id
 * resourceServer: The audience for the auth token
@@ -29,10 +29,10 @@ Fields:
 You can also pass in a cache object, used for only OAuth v2, with the following two functions:
 - get(string kid){
   return (The base64 encoded public key)
-} 
+}
 - set(string kid, string encodedPublicKey, int TTL) {
   return;
 }
 
 ## Development
-We are using [semantic-release](https://github.com/semantic-release/semantic-release) with [AngularJS Git Commit Message conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit). Please ensure you use that commit message format so that publishing happens as needed. We recommend using [commitizen](https://github.com/commitizen/cz-cli) for that.
+We are using [semantic-release](https://github.com/semantic-release/semantic-release) with [AngularJS Git Commit Message conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit). Please ensure that you use that commit message format so that publishing happens as needed. We recommend using [commitizen](https://github.com/commitizen/cz-cli) for that.
