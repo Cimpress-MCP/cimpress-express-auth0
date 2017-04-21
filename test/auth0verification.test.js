@@ -12,7 +12,7 @@ chai.use(spies);
 
 describe('Verify auth0 application functions.', function () {
 
-  var helper, jwtMock, config, mw;
+  let helper, jwtMock, config, mw, defaultCache;
   const clientId = "myId";
   const domain = "cimpressfake.auth0.com";
   const realm = "https://fakeapi.cimpress.io/";
@@ -24,13 +24,18 @@ describe('Verify auth0 application functions.', function () {
           application: {
             clientId: clientId,
             connections: ['conn1', 'conn2'],
-            secret: 'this is a secret',
+            secret: 'this is a secret'
           },
           domain: domain,
-          realm,
-          jwksUrl
+          realm: realm,
+          jwksUrl: jwksUrl,
         }
       }
+    };
+
+    defaultCache = {
+      get: () => Promise.resolve(undefined),
+      set: () => Promise.resolve(),
     };
 
     jwtMock = new JwtMock();
@@ -43,44 +48,18 @@ describe('Verify auth0 application functions.', function () {
     helper = undefined;
   });
 
-  it('Should validate a request with a non-base64 encoded secret', function () {
+  it('Should validate a request', function () {
     jwtMock.setJwtFunction(function (req, res, next) {
       req.user = {};
       next();
     });
 
-    helper = new Helper(mw, config);
+    helper = new Helper(mw, config, null, defaultCache);
     helper.app.get("/stub", function (req, res) {
       res.status(200).json({ name: "tobi" });
     });
-
     return helper.execute("/stub").expect(200).then(function (req, res) {
-      expect(helper.finishedRequest.user).to.not.be.undefined;
-
-      // ensure the original client secret was passed through
-      expect(jwtMock.options.secret).to.equal(config.app.auth0.application.secret);
-    });
-  });
-
-  it('Should validate a request with a base64 encoded secret', function () {
-    jwtMock.setJwtFunction(function (req, res, next) {
-      req.user = {};
-      next();
-    });
-
-    config.app.auth0.application.secret = new Buffer('this is a secret').toString('base64');
-    helper = new Helper(mw, config);
-    helper.app.get("/stub", function (req, res) {
-      res.status(200).json({ name: "tobi" });
-    });
-
-    return helper.execute("/stub").expect(200).then(function (req, res) {
-      expect(helper.finishedRequest.user).to.not.be.undefined;
-
-      // ensure the original client secret was base64 decoded
-      expect(jwtMock.options.secret).to.be.an.instanceof(Buffer);
-      var decodedSecret = new Buffer(jwtMock.options.secret).toString('base64');
-      expect(decodedSecret).to.equal(config.app.auth0.application.secret);
+      return expect(helper.finishedRequest.user).to.not.be.undefined;
     });
   });
 
@@ -91,7 +70,7 @@ describe('Verify auth0 application functions.', function () {
         message: 'No authorization token was found'
       }));
     });
-    helper = new Helper(mw, config);
+    helper = new Helper(mw, config, null, defaultCache);
     helper.app.get("/stub", function (req, res) {
       res.status(200).json({ name: "tobi" });
     });
@@ -116,7 +95,7 @@ describe('Verify auth0 application functions.', function () {
     var v2config = JSON.parse(JSON.stringify(config));
     v2config.app.auth0.application.resourceServer = 'http://api.cimpress.io/';
 
-    helper = new Helper(mw, v2config);
+    helper = new Helper(mw, v2config, null, defaultCache);
     helper.app.get("/stub", function (req, res) {
       res.status(200).json({ name: "tobi" });
     });
@@ -140,7 +119,7 @@ describe('Verify auth0 application functions.', function () {
 
     var excludedRoute = "/excluded";
     config.app.auth0.application.excludedRoutes = [excludedRoute];
-    helper = new Helper(mw, config);
+    helper = new Helper(mw, config, null, defaultCache);
     helper.app.get(excludedRoute, function (req, res) {
       res.status(200).json({});
     });
@@ -161,7 +140,7 @@ describe('Verify auth0 application functions.', function () {
       url: excludedRoute,
       methods: ["GET"]
     }];
-    helper = new Helper(mw, config);
+    helper = new Helper(mw, config, null, defaultCache);
     helper.app.get(excludedRoute, function (req, res) {
       res.status(200).json({});
     });

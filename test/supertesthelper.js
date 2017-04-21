@@ -1,7 +1,7 @@
 var request = require("supertest-as-promised"),
   express = require("express");
 
-module.exports = function (middleware, mwconfig, logger) {
+module.exports = function (middleware, mwconfig, logger, cache) {
   var app = express(),
     config = mwconfig,
     me = this;
