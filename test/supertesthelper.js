@@ -20,8 +20,13 @@ module.exports = function (middleware, mwconfig, logger, cache) {
     logger = require('./spylogger.js');
   }
 
-  // invoke the thing for real
-  middleware(app, config, logger);
+  if (cache) {
+    // invoke the thing for real
+    middleware(app, config, logger, cache);
+  } else {
+    // invoke the thing for real
+    middleware(app, config, logger);
+  }
 
   // grab the request and response after the middleware
   app.use(function (req, res, next) {

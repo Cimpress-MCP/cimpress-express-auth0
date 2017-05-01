@@ -20,6 +20,9 @@
   },
   "author": "Dave Purrington",
   "license": "SEE LICENSE in LICENSE.txt",
+  "contributors": [{
+    "name": "Dan Tocco"
+  }],
   "dependencies": {
     "bluebird": "^3.5.0",
     "express-jwt": "^5.1.0",

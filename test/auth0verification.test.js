@@ -19,18 +19,11 @@ describe('Verify auth0 application functions.', function () {
   const jwksUrl = "https://fakejwksserver.cimpress.io";
   beforeEach(function () {
     config = {
-      app: {
-        auth0: {
-          application: {
-            clientId: clientId,
-            connections: ['conn1', 'conn2'],
-            secret: 'this is a secret'
-          },
-          domain: domain,
-          realm: realm,
-          jwksUrl: jwksUrl,
-        }
-      }
+      clientId: clientId,
+      secret: 'this is a secret',
+      domain: domain,
+      realm: realm,
+      jwksUrl: jwksUrl,
     };
 
     defaultCache = {
@@ -40,7 +33,7 @@ describe('Verify auth0 application functions.', function () {
 
     jwtMock = new JwtMock();
 
-    mw = require('../lib/auth0verification.js');
+    mw = require('../lib/index.js');
   });
 
   afterEach(function () {
@@ -93,7 +86,7 @@ describe('Verify auth0 application functions.', function () {
     });
     // Clone the config so as not to break other tests.
     var v2config = JSON.parse(JSON.stringify(config));
-    v2config.app.auth0.application.resourceServer = 'http://api.cimpress.io/';
+    v2config.audience = 'http://api.cimpress.io/';
 
     helper = new Helper(mw, v2config, null, defaultCache);
     helper.app.get("/stub", function (req, res) {
@@ -118,7 +111,7 @@ describe('Verify auth0 application functions.', function () {
     });
 
     var excludedRoute = "/excluded";
-    config.app.auth0.application.excludedRoutes = [excludedRoute];
+    config.excludedRoutes = [excludedRoute];
     helper = new Helper(mw, config, null, defaultCache);
     helper.app.get(excludedRoute, function (req, res) {
       res.status(200).json({});
@@ -136,7 +129,7 @@ describe('Verify auth0 application functions.', function () {
     });
 
     var excludedRoute = "/excluded";
-    config.app.auth0.application.excludedRoutes = [{
+    config.excludedRoutes = [{
       url: excludedRoute,
       methods: ["GET"]
     }];
