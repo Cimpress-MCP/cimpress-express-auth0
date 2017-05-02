@@ -20,7 +20,7 @@ var config = {
   domain: 'The token issuer w/o https:// or the trailing /',
   realm: 'The realm of the token, used in the challenge headers, full url (w/ https:// and  trailing /)',
   jwksUrl: 'The url to retrieve the jwk from, only needed for OAuth v2',
-  resourceServer: 'The audience for the auth token',
+  audience: 'The audience for the auth token',
   excludedRoutes (OPTIONAL): [  // Routes that shouldn't be protected by Auth0
     {
       url: '/healthcheck',  // Supports a regex as well
