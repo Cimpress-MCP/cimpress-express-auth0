@@ -79,8 +79,7 @@ describe('Verify auth0 application functions with legacy config.', function () {
       expect(helper.finishedRequest.user).to.be.undefined;
       expect(helper.finishedResponse._headers['www-authenticate']).to.include(
         'Bearer realm="' + domain + '", scope="client_id=' + clientId +
-        ' service=' + helper.finishedRequest.protocol +
-        '://' + helper.finishedRequest.hostname + helper.finishedRequest.baseUrl + '"');
+        ' service=https://' + helper.finishedRequest.hostname + helper.finishedRequest.baseUrl + '"');
     });
   });
 
@@ -104,8 +103,7 @@ describe('Verify auth0 application functions with legacy config.', function () {
       expect(helper.finishedRequest.user).to.be.undefined;
       expect(helper.finishedResponse._headers['www-authenticate']).to.include(
         'Bearer realm="' + domain + '", scope="client_id=' + clientId +
-        ' service=' + helper.finishedRequest.protocol +
-        '://' + helper.finishedRequest.hostname + helper.finishedRequest.baseUrl + '"');
+        ' service=https://' + helper.finishedRequest.hostname + helper.finishedRequest.baseUrl + '"');
       expect(helper.finishedResponse._headers['www-authenticate']).to.include(
         'Bearer realm="' + realm + '", authorization_uri="https://' + domain + '/oauth/token"');
     });
