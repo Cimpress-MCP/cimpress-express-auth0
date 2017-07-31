@@ -16,11 +16,12 @@ The config object passed in must have the following sections and fields:
 ```js
 var config = {
   secret: 'The client secret, only needed for OAuth v1',
-  clientId: 'Your own client id',
+  clientId: 'Your own client id, only needed for OAuth v1',
   domain: 'The token issuer w/o https:// or the trailing /',
   realm: 'The realm of the token, used in the challenge headers, full url (w/ https:// and  trailing /)',
   jwksUrl: 'The url to retrieve the jwk from, only needed for OAuth v2',
   audience: 'The audience for the auth token',
+  disableV1: 'Should auth v1 be enabled (defaults to false), not required',
   excludedRoutes (OPTIONAL): [  // Routes that shouldn't be protected by Auth0
     {
       url: '/healthcheck',  // Supports a regex as well
@@ -29,6 +30,8 @@ var config = {
   ],
 };
 ```
+
+This library also supports the 'express-unless' library.
 
 You must also pass in a cache object, used for only OAuth v2, with the following two functions:
 ```js
