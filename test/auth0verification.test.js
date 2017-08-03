@@ -112,7 +112,7 @@ describe('Verify auth0 application functions.', function () {
     // Clone the config so as not to break other tests.
     var v2config = JSON.parse(JSON.stringify(config));
     v2config.audience = 'http://api.cimpress.io/';
-    v2config.disableV1 = true;
+    v2config.enableV1 = false;
 
     helper = new Helper(mw, v2config, null, defaultCache);
     helper.app.get("/stub", function (req, res) {
