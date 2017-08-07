@@ -102,6 +102,33 @@ describe('Verify auth0 application functions.', function () {
     });
   });
 
+  it('Should return an appropriate WWW-Authenticate header for API Authentication when V1 is disabled', function () {
+
+    jwtMock.setJwtFunction(function (req, res, next) {
+      return next(new UnauthorizedError('credentials_required', {
+        message: 'No authorization token was found'
+      }));
+    });
+    // Clone the config so as not to break other tests.
+    var v2config = JSON.parse(JSON.stringify(config));
+    v2config.audience = 'http://api.cimpress.io/';
+    v2config.enableV1 = false;
+
+    helper = new Helper(mw, v2config, null, defaultCache);
+    helper.app.get("/stub", function (req, res) {
+      res.status(200).json({ name: "tobi" });
+    });
+
+    return helper.execute("/stub").expect(401).then(function (req, res) {
+      expect(helper.finishedRequest.user).to.be.undefined;
+      expect(helper.finishedResponse._headers['www-authenticate']).to.not.include(
+        'Bearer realm="' + domain + '", scope="client_id=' + clientId +
+        ' service=https://' + helper.finishedRequest.hostname + helper.finishedRequest.baseUrl + '"');
+      expect(helper.finishedResponse._headers['www-authenticate']).to.include(
+        'Bearer realm="' + realm + '", authorization_uri="https://' + domain + '/oauth/token"');
+    });
+  });
+
   it('Should be able to exclude a route', function () {
     jwtMock.setJwtFunction(function (req, res, next) {
       req.user = {};
