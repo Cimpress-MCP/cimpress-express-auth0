@@ -76,6 +76,97 @@ describe('Verify auth0 application functions.', function () {
     });
   });
 
+  it('Should log when unauthenticated', function() {
+    const defaultLogger = chai.spy();
+
+    jwtMock.setJwtFunction(function (req, res, next) {
+      return next(new UnauthorizedError('credentials_required', {
+        message: 'No authorization token was found'
+      }));
+    });
+    helper = new Helper(mw, config, { log: defaultLogger }, defaultCache);
+    helper.app.get("/stub", function (req, res) {
+      res.status(200).json({ name: "tobi" });
+    });
+
+    return helper.execute("/stub").then(function (req, res) {
+      expect(defaultLogger).to.have.been.called();
+    });
+  });
+
+  it('Should use logger on the request object when preferRequestLogger is enabled', function(){
+    const defaultLogger = chai.spy();
+    const requestLogger = chai.spy();
+
+    jwtMock.setJwtFunction(function (req, res, next) {
+      return next(new UnauthorizedError('credentials_required', {
+        message: 'No authorization token was found'
+      }));
+    });
+
+    var v2config = JSON.parse(JSON.stringify(config));
+    v2config.preferRequestLogger = true;
+
+    helper = new Helper(mw, v2config, { log: defaultLogger }, defaultCache);
+    helper.setup = (req, res) => {
+      req.logger = { log: requestLogger };
+    }
+    helper.app.get("/stub", function (req, res) {
+      res.status(200).json({ name: "tobi" });
+    });
+
+    return helper.execute("/stub").then(function (req, res) {
+      expect(requestLogger).to.have.been.called();
+    });
+  });
+
+  it('Should use default logger when preferRequestLogger is disabled', function(){
+    const defaultLogger = chai.spy();
+    const requestLogger = chai.spy();
+
+    var v2config = JSON.parse(JSON.stringify(config));
+    v2config.preferRequestLogger = false;
+
+    jwtMock.setJwtFunction(function (req, res, next) {
+      return next(new UnauthorizedError('credentials_required', {
+        message: 'No authorization token was found'
+      }));
+    });
+    helper = new Helper(mw, v2config, { log: defaultLogger }, defaultCache);
+    helper.setup = (req, res) => {
+      req.logger = { log: requestLogger };
+    }
+    helper.app.get("/stub", function (req, res) {
+      res.status(200).json({ name: "tobi" });
+    });
+
+    return helper.execute("/stub").then(function (req, res) {
+      expect(defaultLogger).to.have.been.called();
+    });
+  });
+
+  it('Should use default logger on the request object when preferRequestLogger is enabled but no logger is provided', function(){
+    const defaultLogger = chai.spy();
+
+    var v2config = JSON.parse(JSON.stringify(config));
+    v2config.preferRequestLogger = true;
+
+    jwtMock.setJwtFunction(function (req, res, next) {
+      return next(new UnauthorizedError('credentials_required', {
+        message: 'No authorization token was found'
+      }));
+    });
+    helper = new Helper(mw, v2config, { log: defaultLogger }, defaultCache);
+
+    helper.app.get("/stub", function (req, res) {
+      res.status(200).json({ name: "tobi" });
+    });
+
+    return helper.execute("/stub").then(function (req, res) {
+      expect(defaultLogger).to.have.been.called();
+    });
+  });
+
   it('Should return an appropriate WWW-Authenticate header for API Authentication', function () {
 
     jwtMock.setJwtFunction(function (req, res, next) {

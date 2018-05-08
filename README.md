@@ -22,6 +22,7 @@ var config = {
   jwksUrl: 'The url to retrieve the jwk from, only needed for OAuth v2',
   audience: 'The audience for the auth token',
   enableV1: 'Should auth v1 be enabled (defaults to true), not required',
+  preferRequestLogger: 'Should use a logger on the request object, not required',
   excludedRoutes (OPTIONAL): [  // Routes that shouldn't be protected by Auth0
     {
       url: '/healthcheck',  // Supports a regex as well
