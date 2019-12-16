@@ -11,7 +11,7 @@ before_install:
 before_script:
   - yarn
 after_success:
-  - yarn run semantic-release
+  - npm run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
