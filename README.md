@@ -1,5 +1,7 @@
 ![Build Status](https://travis-ci.org/Cimpress-MCP/cimpress-express-auth0.svg?branch=master)
 
+Only building on node 8
+
 # cimpress-express-auth0
 Express.js middleware designed for managing a web application's interactions with the Auth0 SDK.
 
