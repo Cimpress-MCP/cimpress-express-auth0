@@ -42,7 +42,7 @@
     "express": "^4.15.2",
     "mocha": "^6.2.2",
     "mockery": "^2.0.0",
-    "semantic-release": "^15.13.32",
+    "semantic-release": "^17.2.3",
     "semantic-release-cli": "^5.2.3",
     "supertest": "^3.0.0",
     "supertest-as-promised": "^4.0.2",
