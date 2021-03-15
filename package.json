@@ -30,7 +30,7 @@
     "express-jwt": "^5.1.0",
     "express-unless": "^0.3.0",
     "jsonwebtoken": "^8.5.1",
-    "jwks-rsa": "^1.1.1 <1.10.0",
+    "jwks-rsa": "^1.1.1 <1.9.0",
     "lodash": "^4.17.15",
     "util": "^0.10.3"
   },
